@@ -1,0 +1,29 @@
+{
+  "name": "hquery",
+  "version": "1.0.0",
+  "description": "HQuery is a small and lightweight JQuery alternative",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx webpack --config webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maurictg/HQuery.git"
+  },
+  "keywords": [
+    "JQuery",
+    "HQuery",
+    "AJAX"
+  ],
+  "author": "maurictg",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/maurictg/HQuery/issues"
+  },
+  "homepage": "https://github.com/maurictg/HQuery#readme",
+  "devDependencies": {
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12"
+  }
+}

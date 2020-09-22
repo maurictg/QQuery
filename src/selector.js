@@ -55,12 +55,18 @@ let Selector = function() {
     }
 
     fn.addClass = function(c) {
-        this.each((e) => e.classList.add(c));
+        var classes = c.split(' ');
+        this.each((el) => {
+            classes.forEach(e => el.classList.add(e));
+        });
         return this;
     }
 
     fn.rmClass = function(c) {
-        this.each((e) => e.classList.remove(c));
+        var classes = c.split(' ');
+        this.each((el) => {
+            classes.forEach(e => el.classList.remove(e));
+        });
         return this;
     }
 
@@ -109,6 +115,10 @@ let Selector = function() {
 
     fn.children = function() {
         return new _c(this[0].children);
+    }
+
+    fn.first = function() {
+        return new _c(this[0]);
     }
 
     fn.focus = function() {

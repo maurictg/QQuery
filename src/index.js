@@ -20,6 +20,9 @@ let QQuery = function() {
         },
         addHelper(name, callback) {
             $[name] = callback;
+        },
+        use: function() {
+            return $;
         }
     };
 }();
@@ -30,4 +33,4 @@ QQuery.init();
 global.QQuery = QQuery;
 global.$ = $;
 
-export { QQuery, $ };
+export default QQuery;

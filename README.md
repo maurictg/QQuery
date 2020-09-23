@@ -25,7 +25,11 @@ To use QQuery in a html file download the qquery.min.js file from the releases p
 
 To use QQuery in your node project, they're two ways:
 ```js
-import { $ } from 'qquery';
+import QQuery from 'qquery';
+
+//There two ways to get the $ selector
+const $ = global.$; //You still need the import, else the global isnt set
+const $ = QQuery.use();
 
 function getHtmlElement() {
     return $('#myElement');
@@ -103,7 +107,8 @@ The Hquery object is used to [create extensions](#create-your-own-extension) and
 QQuery = { 
     extensions: {…},
     version: "1.0",
-    addHelper: addHelper(name, callback) 
+    addHelper: addHelper(name, callback),
+    use: use() //returns the $ selector
 }
 ```
 Head over to the helpers/extensions section to learn more over how to use the QQuery object.

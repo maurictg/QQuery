@@ -2,8 +2,8 @@ import H from './selector';
 
 /**
  * Helper functions
- * Helpers are very easy to create: Make sure your helper file is loaded later than HQuery.
- * Just use H.[functionName] to register a function
+ * Helpers are very easy to create: Make sure your helper file is loaded later than QQuery.
+ * Just use QQuery.addHelper() to register a function
  */
 
 /**

@@ -27,16 +27,16 @@ let Selector = function() {
         /* Store objects in "this" */
         for (let i = 0; i < this.length; i++) this[i] = nodes[i];
 
-        if (global.HQuery) {
+        if (global.QQuery) {
             /**
              * Load extensions.
              * For the usage of extensions: see animations.js
              */
-            for (const [k, v] of Object.entries(global.HQuery.extensions)) {
+            for (const [k, v] of Object.entries(global.QQuery.extensions)) {
                 _c.prototype[k] = (...p) => v(this, ...p);
             }
         } else {
-            console.error('Hquery is undefined in constructor');
+            console.error('Qquery is undefined in constructor');
         }
     }
 
@@ -121,6 +121,10 @@ let Selector = function() {
         return new _c(this[0]);
     }
 
+    fn.get = function(i) {
+        return new _c(this[i]);
+    }
+
     fn.focus = function() {
         this[0].focus();
         return this;
@@ -170,7 +174,7 @@ let Selector = function() {
 
     fn.attr = function(n, v) {
         if(!n) return;
-        if(!(v || v === '')) return this[0].getAttribute(n);
+        if(v === undefined) return this[0].getAttribute(n);
         this.each((e) => e.setAttribute(n, v));
         return this;
     }
@@ -178,6 +182,13 @@ let Selector = function() {
     fn.rmAttr = function(n) {
         if(!n) return;
         this.each((e) => e.removeAttribute(n));
+        return this;
+    }
+
+    fn.prop = function(n, v) {
+        if(!n) return;
+        if(v === undefined) return this[0][n];
+        this.each((e) => e[n] = v);
         return this;
     }
 

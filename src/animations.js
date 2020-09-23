@@ -1,4 +1,4 @@
-//HQuery animation: HFade
+//QQuery animation: HFade
 const hFade = {
     fade: (t, q, dur, cb) => {
         let o = (t) ? 0 : 1;

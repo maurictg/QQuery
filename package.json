@@ -1,7 +1,7 @@
 {
-  "name": "hquery",
+  "name": "qquery",
   "version": "1.0.0",
-  "description": "HQuery is a small and lightweight JQuery alternative",
+  "description": "QQuery is a small and lightweight JQuery alternative",
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,21 +9,22 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/maurictg/HQuery.git"
+    "url": "git+https://github.com/maurictg/QQuery.git"
   },
   "keywords": [
     "JQuery",
-    "HQuery",
+    "QQuery",
     "AJAX"
   ],
   "author": "maurictg",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/maurictg/HQuery/issues"
+    "url": "https://github.com/maurictg/QQuery/issues"
   },
-  "homepage": "https://github.com/maurictg/HQuery#readme",
+  "homepage": "https://github.com/maurictg/QQuery#readme",
   "devDependencies": {
     "webpack": "^4.44.2",
     "webpack-cli": "^3.3.12"
-  }
+  },
+  "dependencies": {}
 }

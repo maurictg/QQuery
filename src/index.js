@@ -4,11 +4,11 @@ import { ajax, post, get, getJSON, serializeJSON } from './helpers';
 import $ from './selector';
 
 /**
- * HQuery version 1.0
+ * QQuery version 1.0.0
  * © 2020 maurictg, MIT Licence
  */
 
-let HQuery = function() {
+let QQuery = function() {
     return {
         extensions: { fadeIn, fadeOut, serialize },
         version: '1.0',
@@ -24,10 +24,10 @@ let HQuery = function() {
     };
 }();
 
-//Auto-init hquery
-HQuery.init();
+//Auto-init qquery
+QQuery.init();
 
-global.HQuery = HQuery;
+global.QQuery = QQuery;
 global.$ = $;
 
-export { HQuery, $ };
+export { QQuery, $ };

@@ -4,7 +4,7 @@ var path = require('path');
 module.exports = {
     entry: './src/index.js',
     output: {
-        filename: 'hquery.min.js',
+        filename: 'qquery.min.js',
         path: path.resolve(__dirname),
     },
 }

@@ -3,7 +3,8 @@ Small alternative for JQuery including AJAX
 
 ## Installation
 Clone this repo and enter ```npm install```
-To generate the qquery.min.js client-side file run ```npm run build```
+To generate the qquery.min.js client-side file run ```npm run build```.
+Or download the qquery.min.js file from the Releases page in Github.
 
 You can also install QQuery with NPM:
 ```

@@ -1,8 +1,7 @@
 {
-  "name": "@maurictg/qquery",
+  "name": "@blocksharp/qquery",
   "version": "1.0.0",
   "description": "QQuery is a small and lightweight JQuery alternative",
-  "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npx webpack --config webpack.config.js"

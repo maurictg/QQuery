@@ -5,6 +5,11 @@ Small alternative for JQuery including AJAX
 Clone this repo and enter ```npm install```
 To generate the qquery.min.js client-side file run ```npm run build```
 
+You can also install QQuery with NPM:
+```
+npm i @blocksharp/qquery
+```
+
 ## Usage
 To use QQuery in a html file download the qquery.min.js file from the releases page and import it in your HTML file like in the example below
 ```html
@@ -507,8 +512,101 @@ If you are using NodeJS, you have to use the global like this:
 ```global.QQuery.extensions.myExtension = (q, ...)```
 
 ## Helpers
-[documentation in progress]
+The following helpers are out-of-the-box. You can also [add your own helper](#create-your-own-helper).
 
-Helpers out-of-the-box:
+### $.ajax(options, callback)
+Create a XHR request to a server.
+The options parameter accepts the following object:
+```js
+Object {
+    method, //string, "get", "post" etc.
+    url, //string "/test/postTest" i.e.
+    data, //object or string, opptional. like: {user: 'henk'} or URLEncoded 'user=henk'
+    responseType, //required, sets the response format. When receiving JSON use 'json', xml/html use 'xml'. Text is default.
+    requestType, //required in post/put, 'formencoded' or 'urlencoded' for 'application/x-www-form-urlencoded', 'json' for 'application/json'. If json, dont use string as data. Only usable by post/put.
+    headers, //optional, add headers to the request. Object, {key: value, ...}
+    onComplete, //optional, onComplete handler
+    onError, //optional, onError handler
+    onProgress(loaded, total, percentage), //optional, onProgress handler.
+}
+```
+The callback parameter accepts a function like this:
+```js
+function callback(response, statusCode, statusText)
+```
 
-$.post, $.get, $.ajax, $.getJSON, $.serializeJSON
+Example:
+```js
+//Post formencoded data to a server
+var options = {
+    method: 'post',
+    url: '/post',
+    data: {
+        username: 'henk',
+        password: 'henk123'
+    },
+    requestType: 'formencoded',
+    responseType: 'json'
+};
+
+$.ajax(options, (response, statusCode) => {
+    if(statusCode === 200) {
+        var json = response;
+        //...
+    }
+});
+```
+
+### $.get(url, callback, responseType = 'text')
+Get data from a server. This is a helper for $.ajax
+```js
+$.get('/getdata', (r, status) => {
+    if(status === 200) {
+        console.log(r);
+    }
+}, 'json');
+```
+
+### $.post(url, data, callback, resType = 'json', reqType = 'urlencoded')
+Post data to the server. This is also a hlper for $.ajax
+```js
+$.post('/postdata', {name: 'henk'}, (r, code) => {
+    if(code === 200) {
+        console.log(r);
+    }
+});
+```
+
+### $.getJSON(url, callback)
+A shorthand for $.get
+```js
+$.getJSON('/getjson', (r) => {
+    console.log(r);
+});
+```
+
+### $.serializeJSON(json)
+Serializes JSON to form/url encoded data
+```js
+var json = { name: 'henk', age: 20 };
+var encoded = $.serializeJSON(json);
+//name=henk&age=20
+```
+
+### Create your own helper
+QQuery allows you to add your own helper using the QQuery object.
+
+You can use the following function
+```QQuery.addHelper(name, callback)```
+
+Example:
+```js
+//Create a helper. For NodeJS use global.QQuery.addHelper(...)
+QQuery.addHelper('test', (name) => {
+    console.log('my name is: '+name);
+});
+
+//Usage:
+$.test('henk');
+//my name is: henk
+```

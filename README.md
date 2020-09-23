@@ -515,6 +515,13 @@ If you are using NodeJS, you have to use the global like this:
 The following helpers are out-of-the-box. You can also [add your own helper](#create-your-own-helper).
 
 ### $.ajax(options, callback)
+
+**XSRF**
+All QQuery's XHR helpers automatically add the XSRF-token if ```<meta name="csrf-token">``` is present.
+
+HQuery will add the X-CSRF-TOKEN header automatically for you.
+
+
 Create a XHR request to a server.
 The options parameter accepts the following object:
 ```js

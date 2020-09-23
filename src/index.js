@@ -4,14 +4,14 @@ import { ajax, post, get, getJSON, serializeJSON } from './helpers';
 import $ from './selector';
 
 /**
- * QQuery version 1.0.0
+ * QQuery version 1.0.1
  * © 2020 maurictg, MIT Licence
  */
 
 let QQuery = function() {
     return {
         extensions: { fadeIn, fadeOut, serialize },
-        version: '1.0.0',
+        version: '1.0.1',
         init: function() {
             const helpers = { ajax, post, get, getJSON, serializeJSON };
             for (const [k, v] of Object.entries(helpers)) {

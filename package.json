@@ -1,5 +1,5 @@
 {
-  "name": "qquery",
+  "name": "@maurictg/qquery",
   "version": "1.0.0",
   "description": "QQuery is a small and lightweight JQuery alternative",
   "private": true,
@@ -26,5 +26,6 @@
     "webpack": "^4.44.2",
     "webpack-cli": "^3.3.12"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "main": "qquery.min.js"
 }

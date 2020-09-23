@@ -11,7 +11,7 @@ import $ from './selector';
 let QQuery = function() {
     return {
         extensions: { fadeIn, fadeOut, serialize },
-        version: '1.0',
+        version: '1.0.0',
         init: function() {
             const helpers = { ajax, post, get, getJSON, serializeJSON };
             for (const [k, v] of Object.entries(helpers)) {

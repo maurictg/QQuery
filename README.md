@@ -467,7 +467,7 @@ $('#myform').serialize(true);
 ```
 
 ### Create your own extension
-QQuery allows you to create your own extension. Let us show you how! First of all, you have to know that the [QQuery object](#'the-qquery-object') is used here.
+QQuery allows you to create your own extension. Let us show you how! First of all, you have to know that the [QQuery object](#the-qquery-object) is used here.
 
 To register an extension, you do the following:
 ```js

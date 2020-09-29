@@ -4,7 +4,7 @@ import { ajax, post, get, getJSON, serializeJSON, deserializeJSON, cookie } from
 import $ from './selector';
 
 /**
- * QQuery version 1.0.1
+ * QQuery version 1.0.2
  * © 2020 maurictg, MIT Licence
  */
 

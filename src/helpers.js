@@ -1,5 +1,3 @@
-import H from './selector';
-
 /**
  * Helper functions
  * Helpers are very easy to create: Make sure your helper file is loaded later than QQuery.
@@ -16,13 +14,13 @@ import H from './selector';
  *  requestType: string, 
  *  [optional:] headers: object { key: value }
  *  [optional:] onComplete, onError, onProgress(loaded, total, percentage)}
- * @param {Function} cb: Callback function(data, statusCode, statusText)
+ * @param {Function} cb: Callback function(data, statusCode, statusText, headers)
  */
 const ajax = function(o, cb) {
     if(!o || !cb) return false;
     let x = new XMLHttpRequest();
     x.onreadystatechange = function() {
-        if(this.readyState === 4) cb(this.response, this.status, this.statusText);
+        if(this.readyState === 4) cb(this.response, this.status, this.statusText, this.getAllResponseHeaders());
     };
 
     x.onload = o.onComplete;
@@ -31,9 +29,26 @@ const ajax = function(o, cb) {
     o.method = o.method.toLowerCase();
     if(!o.headers) o.headers = {};
 
-    //Check for XSRF token
-    if(H('meta[name="csrf-token"]').any())
-        o.headers['X-CSRF-TOKEN'] = H('meta[name="csrf-token"]').attr('content');
+    //Add XSRF protection token
+    var as = global.QQuery.setup.ajax;
+    if(as.hasValue()) {
+        switch (as.type) {
+            case 'header':
+                o.headers[as.key] = as.value();
+                break;
+            case 'cookie':
+                document.cookie = `${as.key}=${as.value()}`;
+                break;
+            case 'form':
+                {
+                    if(typeof o.data === 'string') o.data = deserializeJSON(o.data);
+                    o.data[as.key] = as.value();
+                }
+                break;
+            default:
+                break;
+        }
+    }
 
     //Open connection
     x.open(o.method, o.url, true);
@@ -85,4 +100,36 @@ const serializeJSON = (json) => {
     return d.join('&').replace(/%20/g, '+');
 };
 
-export { ajax, post, get, getJSON, serializeJSON };
+/**
+ * Deserialize url-encoded string to JSON object
+ * @param {*} str: The string to be deserialized
+ */
+const deserializeJSON = (str) => {
+    var kvp = str.split('&');
+    var json = {};
+    for (var i = 0, len = kvp.length, tmp, key, value; i < len; i++) {
+        tmp = kvp[i].split('=');
+        key = decodeURIComponent(tmp[0]);
+        value = decodeURIComponent(tmp[1]);
+        if (key.search(/\[\]$/) != -1) {
+            tmp = key.replace(/\[\]$/, '');
+            json[tmp] = json[tmp] || [];
+            json[tmp].push(value);
+        }
+        else {
+            json[key] = value;
+        }
+    }
+    return json;
+}
+
+/**
+ * Get a cookie value by name
+ * @param {*} name: The cookie its name
+ */
+const cookie = (name) => {
+    const parts = `; ${document.cookie}`.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+export { ajax, post, get, getJSON, serializeJSON, deserializeJSON, cookie };

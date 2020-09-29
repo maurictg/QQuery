@@ -114,16 +114,21 @@ $(() => {
 ```
 
 ### The QQuery object
-The Hquery object is used to [create extensions](#create-your-own-extension) and [helpers](#Helpers). It looks like this:
+The QQuery object is used to [create extensions](#create-your-own-extension) and [helpers](#Helpers). It looks like this:
 ```js
 QQuery = { 
     extensions: {…},
     version: "1.0",
     addHelper: addHelper(name, callback),
+    setup: {
+        ajax: {
+            // see "Setup"
+        }
+    },
     use: use() //returns the $ selector
 }
 ```
-Head over to the helpers/extensions section to learn more over how to use the QQuery object.
+Head over to the helpers/extensions section to learn more over how to use the QQuery object. If you want to know how you use the setup, head over to [Setup](#Setup).
 
 ## Functions
 All available functions out-of-the-box with code samples
@@ -520,8 +525,7 @@ The following helpers are out-of-the-box. You can also [add your own helper](#cr
 **XSRF**
 All QQuery's XHR helpers automatically add the XSRF-token if ```<meta name="csrf-token">``` is present.
 
-HQuery will add the X-CSRF-TOKEN header automatically for you.
-
+QQuery will add the X-CSRF-TOKEN header automatically for you from the CSRF-TOKEN cookie. If you want to configure this, head over to [Setup](#Setup).
 
 Create a XHR request to a server.
 The options parameter accepts the following object:
@@ -540,7 +544,7 @@ Object {
 ```
 The callback parameter accepts a function like this:
 ```js
-function callback(response, statusCode, statusText)
+function callback(response, statusCode, statusText, responseHeaders)
 ```
 
 Example:
@@ -601,6 +605,21 @@ var encoded = $.serializeJSON(json);
 //name=henk&age=20
 ```
 
+### $.deserializeJSON(data)
+Deserializes form/url-encoded data string to JSON object.
+```js
+var str = 'name=henk&age=20';
+var decoded = $.deserializeJSON(str);
+//Object { name: 'henk', age: 20 };
+```
+
+### $.cookie(name)
+Get cookie by name
+```js
+//document.cookie = 'name=henk';
+var name = $.cookie('name'); // 'henk'
+```
+
 ### Create your own helper
 QQuery allows you to add your own helper using the QQuery object.
 
@@ -618,3 +637,132 @@ QQuery.addHelper('test', (name) => {
 $.test('henk');
 //my name is: henk
 ```
+<<<<<<< HEAD
+=======
+
+## Setup
+
+The QQuery setup object looks as follows:
+```js
+setup: {
+    ajax: {
+        type: 'header', //Type can be: header, cookie or form
+        key: 'X-CSRF-TOKEN', //The name of the header, cookie or field
+
+        //The value function returns the XSRF token from the page
+        value: () => $('meta[name="csrf-token"]').attr('content'),
+        //The hasValue method indicates if the token is present.
+        hasValue: () => $('meta[name="csrf-token"]').any()
+    }
+},
+```
+
+**Important note**
+
+If you are using nodeJS, you have to use ```global.QQuery.setup``` instead of ```QQuery.setup``` to access the settings.
+
+By default, QQuery uses a X-CSRF-TOKEN header in every request. The token is obtained from the csrf-token meta-tag. This looks like this:
+```html
+<meta name="csrf-token" content="YOUR_CSRF_TOKEN">
+```
+
+Frameworks like Laravel automatically work without modifications if you are using this technique.
+
+You can change the settings to whatever you want, but make sure the value and hasValue functions are correctly implemented.
+
+Maybe it is still a bit unclear, watch the following 5 examples to understand how it works.
+
+### Example 1: .NET Core MVC as header from cookie
+Gets the XSFR token from a cookie and sends it as a X-CSFR-TOKEN header
+
+C# startup.cs
+```cs
+//In ConfigureServices
+services.AddAntiforgery(options => options.HeaderName = "X-CSRF-TOKEN");
+//Configure
+public void Configure(IApplicationBuilder app, IAntiforgery antiforgery)
+{
+    //...
+    app.Use(async (context, next) =>
+    {
+        var tokens = antiforgery.GetAndStoreTokens(context);
+            context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken,
+                new CookieOptions() { HttpOnly = false });
+
+        await next.Invoke();
+    });
+
+    //See https://docs.microsoft.com/en-us/aspnet/core/security/anti-request-forgery?view=aspnetcore-3.1#javascript-ajax-and-spas
+}
+```
+
+Javascript
+```js
+//QQuery setup
+$(() => {
+    QQuery.setup.ajax.hasValue = () => !!$.cookie('XSRF-TOKEN');
+    QQuery.setup.ajax.value = () => $.cookie('XSRF-TOKEN');
+});
+
+//Usage
+$.post('/test', {name: 'henk'}, (r) => {
+    //...
+})
+```
+
+Like you see the QQuery.setup.ajax.type and key are omitted, because they equal the default values.
+
+### Example 2: .NET Core MVC from form data without setup
+
+HTML
+```html
+<form id="myform">
+    @Html.AntiForgeryToken()
+    <!-- renders <input name="__RequestVerificationToken" type="hidden" value="...">-->
+    <input type="text" name="username" />
+</form>
+```
+There is no setup needed, because QQuery doesnt need to add the token to the request.
+```js
+$(() => {
+    $.post('/test', $('#myform').serialize(), (r) => {
+        //...
+    });
+});
+```
+
+### Example 3: As formdata from cookie
+Does something like Example 2, but uses the token from a cookie
+Gets the XSRF token from a cookie and sends it as formdata.
+```js
+//Setup
+$(() => {
+    QQuery.setup.ajax.type = 'form';
+    QQuery.setup.ajax.key = '__RequestVerificationToken';
+    QQuery.setup.ajax.hasValue = () => !!$.cookie('XSRF-TOKEN');
+    QQuery.setup.ajax.value = () => $.cookie('XSRF-TOKEN');
+})
+```
+
+### Example 4: As cookie from meta tag
+Gets the XSRF token from the meta tag and sends it as a cookie.
+```js
+//Setup
+$(() => {
+    QQuery.setup.ajax.type = 'cookie';
+    QQuery.setup.ajax.key = 'XSFR-TOKEN'; //cookie name
+    //hasValue and value can be omitted, the default csfr-token meta tag is used.
+});
+```
+
+### Example 5: As header from meta tag
+You have to do nothing, this is implemented by default.
+But you can change the header name like this:
+```js
+$(() => {
+    QQuery.setup.ajax.key = 'MY-TOKEN-NAME';
+    //value and hasValue are default from meta tag
+    //type is default 'header'
+})
+```
+>>>>>>> 9c460a9... Add AJAX setup, $.deserializeJSON helper and $.cookie helper

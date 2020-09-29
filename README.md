@@ -637,8 +637,6 @@ QQuery.addHelper('test', (name) => {
 $.test('henk');
 //my name is: henk
 ```
-<<<<<<< HEAD
-=======
 
 ## Setup
 
@@ -765,4 +763,3 @@ $(() => {
     //type is default 'header'
 })
 ```
->>>>>>> 9c460a9... Add AJAX setup, $.deserializeJSON helper and $.cookie helper

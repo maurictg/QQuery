@@ -19,12 +19,12 @@
 const ajax = function(o, cb) {
     if(!o || !cb) return false;
 
-    global.QQuery.setup.before();
+    global.QQuery.setup.ajax.before();
     let x = new XMLHttpRequest();
     x.onreadystatechange = function() {
         if(this.readyState === 4) {
             cb(this.response, this.status, this.statusText, this.getAllResponseHeaders());
-            global.QQuery.setup.after(this.status);
+            global.QQuery.setup.ajax.after(this.status);
         }
     };
 

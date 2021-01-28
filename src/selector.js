@@ -151,6 +151,21 @@ let Selector = function() {
         this.each((el) => e.append(el));
         return this;
     }
+
+    fn.appendBelow = function (e) {
+        this[0].parentNode.insertBefore(new _c(e)[0], this[0].nextSibling);
+        return this;
+    };
+
+    fn.appendAbove = function (e) {
+        this[0].parentNode.insertBefore(new _c(e)[0], this[0].previousSibling);
+        return this;
+    };
+
+    fn.appendAt = function (e, i) {
+        this.children().get(i).appendAbove(e);
+        return this;
+    };
     
     fn.text = function(t) {
         if(!(t || t === '')) return this[0].innerText;
@@ -223,6 +238,18 @@ let Selector = function() {
 
     fn.any = function() {
         return (this.length > 0)
+    }
+
+    fn.hasClass = function(c) {
+        return this[0].classList.contains(c);
+    }
+
+    fn.indexInParent = function() {
+        return this.parent().indexOf(this[0]);
+    }
+
+    fn.indexOf = function(e) {
+        return Array.prototype.indexOf.call(this.children(), e);
     }
     
     /* Return initalized constructor */

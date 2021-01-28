@@ -143,6 +143,14 @@ $('#mydivs').each((element, index) => {
 })
 ```
 
+### .hasClass(_name_)
+Indicates if an element contains a specified class
+```js
+$('#myel').addClass('bright');
+$('#myel').hasClass('not-bright');
+//this should return false
+```
+
 ### .addClass(_name_)
 Add one or more classes to the selected elements
 ```js
@@ -394,8 +402,8 @@ $('#myelement').rmData('id');
 
 **Special: append**
 
-Append functions are pretty difficult, use them with caution!
-### .append(element)
+Append functions can be pretty difficult, use them with caution!
+### .append(_element_)
 Appends an element to the first element in the selection. You can also append HTML. This moves elements in your DOM.
 ```html
 <div id="t">
@@ -413,7 +421,7 @@ $('#t').append('<h1>Hey!</h1>');
 </script>
 ```
 
-### .appendTo(element)
+### .appendTo(_element_)
 AppendTo is the inverse working of append. It appends the first element in the selection to another element. It accepts a selector anything you put into the selector, like a query string.
 ```html
 <div id="t">
@@ -429,6 +437,45 @@ $('#t2').appendTo('#t');
 
 //Append html to an element
 $('<h1>hey</h1').appendTo('#t2');
+</script>
+```
+
+### .appendBelow(_element_)
+Append an element below the selected element. This function also supports HTML.
+```html
+<div id="parent">
+    <div id="first"></div>
+    <!-- second div should appear here -->
+    <div id="third"></div>
+</div>
+<script>
+$('#first').appendBelow('<div id="second"></div>');
+</script>
+```
+
+### .appendAbove(_element_)
+Append an element above the selected element. This function also supports HTML.
+```html
+<div id="parent">
+    <div id="first"></div>
+    <!-- secpnd div should appear here -->
+    <div id="third"></div>
+</div>
+<script>
+$('#third').appendAbove('<div id="second"></div>');
+</script>
+```
+
+### .appendAt(_index, element_)
+Append an element at a selected index in the selected element's children. This function also supports HTML.
+```html
+<div id="parent">
+    <div id="first"></div> <!-- [0] => [0] -->
+    <!-- second div should appear here -->
+    <div id="third"></div> <!-- [1] => [2] -->
+</div>
+<script>
+$('#parent').appendAt(1, '<div id="second"></div>');
 </script>
 ```
 
@@ -519,7 +566,7 @@ If you are using NodeJS, you have to use the global extension setup like this:
 ## Helpers
 The following helpers are out-of-the-box. You can also [add your own helper](#create-your-own-helper).
 
-### $.ajax(options, callback)
+### $.ajax(_options, callback_)
 
 **XSRF**
 All QQuery's XHR helpers automatically add the XSRF-token if ```<meta name="csrf-token">``` is present.
@@ -568,7 +615,7 @@ $.ajax(options, (response, statusCode) => {
 });
 ```
 
-### $.get(url, callback, responseType = 'text')
+### $.get(_url, callback, responseType = 'text'_)
 Get data from a server. This is a helper for $.ajax
 ```js
 $.get('/getdata', (r, status) => {
@@ -578,17 +625,37 @@ $.get('/getdata', (r, status) => {
 }, 'json');
 ```
 
-### $.post(url, data, callback, resType = 'json', reqType = 'urlencoded')
+### $.post(_url, data, callback, resType = 'json', reqType = 'urlencoded'_)
 Post data to the server. This is also a helper for $.ajax
 ```js
 $.post('/postdata', {name: 'henk'}, (r, code) => {
-    if(code === 200) {
+    if(code === 201) {
         console.log(r);
     }
 });
 ```
 
-### $.getJSON(url, callback)
+### $.put(_url, data, callback, resType = 'json', reqType = 'urlencoded'_)
+PUT data to the server. This is also a helper for $.ajax
+```js
+$.put('/update', {id: 1, name: 'henk'}, (response, code) => {
+    if(code === 200) {
+        console.log(response);
+    }
+});
+```
+
+### $.del(_url, callback, resType = 'text'_)
+Perform a DELETE HTTP request
+```js
+$.delete('/delete/1', (res, code) => {
+    if(code === 204) {
+        console.log(res);
+    }
+});
+```
+
+### $.getJSON(_url, callback_)
 A shorthand for $.get
 ```js
 $.getJSON('/getjson', (r) => {
@@ -596,7 +663,7 @@ $.getJSON('/getjson', (r) => {
 });
 ```
 
-### $.serializeJSON(json)
+### $.serializeJSON(_json_)
 Serializes JSON to form/url encoded data
 ```js
 var json = { name: 'henk', age: 20 };
@@ -604,7 +671,7 @@ var encoded = $.serializeJSON(json);
 //name=henk&age=20
 ```
 
-### $.deserializeJSON(data)
+### $.deserializeJSON(_data_)
 Deserializes form/url-encoded data string to JSON object.
 ```js
 var str = 'name=henk&age=20';
@@ -612,7 +679,7 @@ var decoded = $.deserializeJSON(str);
 //Object { name: 'henk', age: 20 };
 ```
 
-### $.cookie(name)
+### $.cookie(_name_)
 Get cookie by name
 ```js
 //document.cookie = 'name=henk';
@@ -654,7 +721,7 @@ setup: {
         //The before callback is called before any AJAX request is sent
         before: () => {},
         //The after callback is called after any AJAX response is received. You can use this for a global error handler or sth like that
-        after: (statusCode) => {}
+        after: (statusCode, response) => {}
     }
 },
 ```

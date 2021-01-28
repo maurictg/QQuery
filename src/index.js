@@ -1,6 +1,6 @@
 import { fadeIn, fadeOut } from './animations';
 import { serialize } from './extensions';
-import { ajax, post, get, getJSON, serializeJSON, deserializeJSON, cookie } from './helpers';
+import { ajax, post, get, put, del, getJSON, serializeJSON, deserializeJSON, cookie } from './helpers';
 import $ from './selector';
 
 /**
@@ -13,7 +13,7 @@ let QQuery = function() {
         extensions: { fadeIn, fadeOut, serialize },
         version: '1.0.2',
         init: function() {
-            const helpers = { ajax, post, get, getJSON, serializeJSON, deserializeJSON, cookie };
+            const helpers = { ajax, post, get, put, del, getJSON, serializeJSON, deserializeJSON, cookie };
             for (const [k, v] of Object.entries(helpers)) {
                 $[k] = v;
             }
@@ -25,7 +25,7 @@ let QQuery = function() {
                 value: () => $('meta[name="csrf-token"]').attr('content'),
                 hasValue: () => $('meta[name="csrf-token"]').any(),
                 before: () => {},
-                after: (statusCode) => {}
+                after: (statusCode, response) => {}
             }
         },
         addHelper(name, callback) {

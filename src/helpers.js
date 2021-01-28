@@ -24,7 +24,7 @@ const ajax = function(o, cb) {
     x.onreadystatechange = function() {
         if(this.readyState === 4) {
             cb(this.response, this.status, this.statusText, this.getAllResponseHeaders());
-            global.QQuery.setup.ajax.after(this.status);
+            global.QQuery.setup.ajax.after(this.status, this.response);
         }
     };
 
@@ -89,6 +89,8 @@ const ajax = function(o, cb) {
 };
 
 const post = (url, data, callback, resType = 'json', reqType = 'urlencoded') => ajax({url: url, method: 'POST', data: data, responseType: resType, requestType: reqType}, callback);
+const put = (url, data, callback, resType = 'json', reqType = 'urlencoded') => ajax({url: url, method: 'PUT', data: data, responseType: resType, requestType: reqType}, callback);
+const del = (url, callback, resType = 'text') => ajax({url: url, method: 'DELETE', responseType: resType}, callback);
 const get = (url, callback, resType = 'text') => ajax({url: url, method: 'GET', responseType: resType}, callback);
 const getJSON = (url, cb) => get(url, cb, 'json');
 
@@ -137,4 +139,4 @@ const cookie = (name) => {
     if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
-export { ajax, post, get, getJSON, serializeJSON, deserializeJSON, cookie };
+export { ajax, post, put, del, get, getJSON, serializeJSON, deserializeJSON, cookie };

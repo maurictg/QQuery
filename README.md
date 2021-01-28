@@ -494,9 +494,8 @@ QQuery allows you to create your own extension. Let us show you how! First of al
 To register an extension, you do the following:
 ```js
 QQuery.extensions.yourExtension = (q, parameters) => {
-    var selector = q; 
     //q = The selector object
-    //You can use other QQuery extensions/functions on h if you want, like .css and .html.
+    //You can use other QQuery extensions/functions on q if you want, like .css and .html.
     
     if(parameters == 'Yes!') {
         q.css('color', 'green').html('Yes!');
@@ -506,7 +505,7 @@ QQuery.extensions.yourExtension = (q, parameters) => {
     return q;
 };
 ```
-On the place of "parameters" you can add as much as parameters as you want. The q parameter is the selector, make sure you include it even when you are'nt using it.
+On the place of "parameters" you can add as much as parameters as you want. The q parameter is the selector, make sure you include it even when you aren't using it.
 
 You can call your extension like this:
 ```js
@@ -514,7 +513,7 @@ $('#myelement').yourExtension(parameters);
 //Notice that q isn't available, q is passed by QQuery. It is just the $('#myelement') selector object.
 ```
 
-If you are using NodeJS, you have to use the global like this:
+If you are using NodeJS, you have to use the global extension setup like this:
 ```global.QQuery.extensions.myExtension = (q, ...)```
 
 ## Helpers
@@ -580,7 +579,7 @@ $.get('/getdata', (r, status) => {
 ```
 
 ### $.post(url, data, callback, resType = 'json', reqType = 'urlencoded')
-Post data to the server. This is also a hlper for $.ajax
+Post data to the server. This is also a helper for $.ajax
 ```js
 $.post('/postdata', {name: 'henk'}, (r, code) => {
     if(code === 200) {
@@ -650,7 +649,12 @@ setup: {
         //The value function returns the XSRF token from the page
         value: () => $('meta[name="csrf-token"]').attr('content'),
         //The hasValue method indicates if the token is present.
-        hasValue: () => $('meta[name="csrf-token"]').any()
+        hasValue: () => $('meta[name="csrf-token"]').any(),
+
+        //The before callback is called before any AJAX request is sent
+        before: () => {},
+        //The after callback is called after any AJAX response is received. You can use this for a global error handler or sth like that
+        after: (statusCode) => {}
     }
 },
 ```
@@ -658,6 +662,15 @@ setup: {
 **Important note**
 
 If you are using nodeJS, you have to use ```global.QQuery.setup``` instead of ```QQuery.setup``` to access the settings.
+
+In a React application, you can do this using an useEffect hook.
+```js
+//QQuery setup
+useEffect(() => {
+    global.QQuery.setup.ajax.value = () => $.cookie('XSRF-TOKEN');
+    global.QQuery.setup.ajax.hasValue = () => !!$.cookie('XSRF-TOKEN');
+}, []);
+```
 
 By default, QQuery uses a X-CSRF-TOKEN header in every request. The token is obtained from the csrf-token meta-tag. This looks like this:
 ```html
@@ -677,6 +690,7 @@ C# startup.cs
 ```cs
 //In ConfigureServices
 services.AddAntiforgery(options => options.HeaderName = "X-CSRF-TOKEN");
+
 //Configure
 public void Configure(IApplicationBuilder app, IAntiforgery antiforgery)
 {

@@ -23,7 +23,9 @@ let QQuery = function() {
                 type: 'header',
                 key: 'X-CSRF-TOKEN',
                 value: () => $('meta[name="csrf-token"]').attr('content'),
-                hasValue: () => $('meta[name="csrf-token"]').any()
+                hasValue: () => $('meta[name="csrf-token"]').any(),
+                before: () => {},
+                after: (statusCode) => {}
             }
         },
         addHelper(name, callback) {

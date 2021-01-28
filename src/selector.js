@@ -101,7 +101,6 @@ let Selector = function() {
     }
 
     fn.skip = function(n) {
-        if(this.length < (n + 1)) return;
         return new _c(Array.prototype.slice.call(this, n));
     }
 

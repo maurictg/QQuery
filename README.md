@@ -444,12 +444,12 @@ $('<h1>hey</h1').appendTo('#t2');
 Append an element below the selected element. This function also supports HTML.
 ```html
 <div id="parent">
-    <div id="first"></div>
-    <!-- second div should appear here -->
-    <div id="third"></div>
+    <p id="first"></p>
+    <!-- second p should appear here -->
+    <p id="third"></p>
 </div>
 <script>
-$('#first').appendBelow('<div id="second"></div>');
+$('#first').appendBelow('<p id="second"></p>');
 </script>
 ```
 
@@ -457,12 +457,12 @@ $('#first').appendBelow('<div id="second"></div>');
 Append an element above the selected element. This function also supports HTML.
 ```html
 <div id="parent">
-    <div id="first"></div>
-    <!-- secpnd div should appear here -->
-    <div id="third"></div>
+    <p id="first"></p>
+    <!-- secpnd p should appear here -->
+    <p id="third"></p>
 </div>
 <script>
-$('#third').appendAbove('<div id="second"></div>');
+$('#third').appendAbove('<p id="second"></p>');
 </script>
 ```
 
@@ -470,12 +470,12 @@ $('#third').appendAbove('<div id="second"></div>');
 Append an element at a selected index in the selected element's children. This function also supports HTML.
 ```html
 <div id="parent">
-    <div id="first"></div> <!-- [0] => [0] -->
-    <!-- second div should appear here -->
-    <div id="third"></div> <!-- [1] => [2] -->
+    <p id="first"></p> <!-- [0] => [0] -->
+    <!-- second p should appear here -->
+    <p id="third"></p> <!-- [1] => [2] -->
 </div>
 <script>
-$('#parent').appendAt(1, '<div id="second"></div>');
+$('#parent').appendAt(1, '<p id="second"></p>');
 </script>
 ```
 

@@ -1,6 +1,6 @@
 {
   "name": "@blocksharp/qquery",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "QQuery is a small and lightweight JQuery alternative",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

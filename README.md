@@ -143,14 +143,6 @@ $('#mydivs').each((element, index) => {
 })
 ```
 
-### .hasClass(_name_)
-Indicates if an element contains a specified class
-```js
-$('#myel').addClass('bright');
-$('#myel').hasClass('not-bright');
-//this should return false
-```
-
 ### .addClass(_name_)
 Add one or more classes to the selected elements
 ```js
@@ -507,6 +499,41 @@ To know how much, use the property .length
 if($('#myelement').any()) {
     console.log('MyElement exists!');
 }
+```
+
+### .hasClass(_name_)
+Indicates if an element contains a specified class
+```js
+$('#myel').addClass('bright');
+$('#myel').hasClass('not-bright');
+//this should return false
+```
+
+### .indexOf(_element_)
+Find the index of an element in the children of the selected element
+```html
+<div id="parent">
+    <p id="first"></p>  <!-- [0] -->
+    <p id="second"></p> <!-- [1] -->
+    <p id="third"></p>  <!-- [2] -->
+</div>
+<script>
+    let second = $('#second');
+    $('#parent').indexOf(second); // returns 1
+</script>
+```
+
+### .indexInParent()
+Returns the index of the selected element in its parent
+```html
+<div id="parent">
+    <p id="first"></p>  <!-- [0] -->
+    <p id="second"></p> <!-- [1] -->
+    <p id="third"></p>  <!-- [2] -->
+</div>
+<script>
+    $('#third').indexInParent(); // returns 2
+</script>
 ```
 
 ## Extensions

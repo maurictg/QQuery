@@ -351,7 +351,7 @@ $('#myelement').rmCss('background-color');
 Gets the value of an attribute from the first element in the selection or sets a value to all elements in the selection
 ```js
 //Get
-$('#myelement').attr('id')l //myelement
+$('#myelement').attr('id'); //myelement
 
 //Set
 $('#myelement').attr('id', 'myelement');
